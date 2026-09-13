@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>万物互联、极致体验</title>
+<style>
+  @font-face{
+  font-family:"Calligraphy";
+  src:url("fonts/书法.ttf") format("truetype");
+}
+  :root{
+    --ink:#1a1a1a;
+    --gray:#4a4a4a;
+    --line:#e5e5e5;
+    --max-width:1000px;
+  }
+
+  *{ box-sizing:border-box; }
+
+  body{
+    margin:0;
+    padding:60px 20px 80px;
+    font-family:"PingFang SC","Microsoft YaHei","Helvetica Neue",Arial,sans-serif;
+    color:var(--ink);
+    background:#ffffff;
+  }
+
+  .page{
+    max-width:var(--max-width);
+    margin:0 auto;
+  }
+
+  /* ---------- 标题 ---------- */
+  .hero-title{
+    text-align:center;
+    font-size:44px;
+    font-weight:900;
+    letter-spacing:6px;
+    margin:0 0 70px;
+    color:#111;
+    /* 用变形+倾斜模拟毛笔/艺术字的力度感 */
+    font-family:"Calligraphy", "STXingkai","KaiTi",serif;
+    transform: skewX(-2deg);
+  }
+
+  /* ---------- 技术卡片区 ---------- */
+  .tech-row{
+    display:flex;
+    gap:60px;
+    justify-content:center;
+    margin-bottom:70px;
+  }
+
+  .tech-card{
+    flex:1;
+    max-width:440px;
+    text-align:center;
+    margin:0 30px;
+  }
+
+  .tech-icon{
+    width:70px;
+    height:70px;
+    margin:0 auto 22px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
+
+  .tech-icon svg{
+    width:100%;
+    height:100%;
+  }
+
+  .tech-text{
+    text-align:left;
+    font-size:14px;
+    line-height:1.9;
+    color:var(--gray);
+  }
+
+  .tech-text b{
+    color:var(--ink);
+    font-weight:600;
+  }
+
+  /* ---------- 平台支持区 ---------- */
+  .platform-title{
+    text-align:center;
+    font-size:22px;
+    font-weight:700;
+    color:var(--ink);
+    margin-bottom:44px;
+    position:relative;
+  }
+
+  .platform-row{
+    display:flex;
+    justify-content:center;
+    gap:110px;
+  }
+
+  .platform-item{
+    text-align:center;
+    margin:0 55px;
+  }
+
+  .platform-icon{
+    width:52px;
+    height:52px;
+    margin:0 auto 16px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
+
+  .platform-icon svg{
+    width:100%;
+    height:100%;
+    fill:none;
+    stroke:#1a1a1a;
+    stroke-width:1.6;
+  }
+
+  .platform-label{
+    font-size:14px;
+    color:var(--gray);
+    letter-spacing:1px;
+  }
+
+  /* ---------- 响应式 ---------- */
+  @media (max-width: 760px){
+    .hero-title{
+      font-size:28px;
+      letter-spacing:3px;
+      margin-bottom:40px;
+    }
+    .tech-row{
+      flex-direction:column;
+      gap:36px;
+    }
+    .platform-row{
+      gap:36px;
+      flex-wrap:wrap;
+    }
+  }
+</style>
+</head>
+<body>
+
+<div class="page">
+
+  <h1 class="hero-title">万物互联、极致体验</h1>
+
+  <div class="tech-row">
+
+    <!-- HTML5 卡片 -->
+    <div class="tech-card">
+      <div class="tech-icon">
+  <img src="images/1.png" alt="HTML5" style="width:100%;height:100%;object-fit:contain;">
+      </div>
+      <p class="tech-text">
+        <b>【HTML5】</b>HTML5不仅仅是HTML规范的当前最新版本，HTML5进化的重大意义还在于HTML5从技术层面带来了八个类别的革新。HTML5规范以"用户至上"为宗旨。也就是说在遇到冲突时，规范的优先级为：用户&gt;页面作者&gt;实现者（浏览器）&gt;规范开发者（W3C/WHATWG）&gt;纯理论。除此之外，HTML5还引入了一种新的安全模型来保证HTML5足够安全。
+      </p>
+    </div>
+
+    <!-- CSS3 卡片 -->
+    <div class="tech-card">
+      <div class="tech-icon">
+  <img src="images/2.png" alt="CSS3" style="width:100%;height:100%;object-fit:contain;">
+      </div>
+      <p class="tech-text">
+        <b>【HTML5】</b>HTML5不仅仅是HTML规范的当前最新版本，HTML5进化的重大意义还在于HTML5从技术层面带来了八个类别的革新。HTML5规范以"用户至上"为宗旨。也就是说在遇到冲突时，规范的优先级为：用户&gt;页面作者&gt;实现者（浏览器）&gt;规范开发者（W3C/WHATWG）&gt;纯理论。除此之外，HTML5还引入了一种新的安全模型来保证HTML5足够安全。
+      </p>
+    </div>
+
+  </div>
+
+  <h2 class="platform-title">平台支持</h2>
+
+  <div class="platform-row">
+
+    <div class="platform-item">
+      <div class="platform-icon">
+        <!-- Apple -->
+        <img src="images/3.png" alt="原生移动APP开发" style="width:100%;height:100%;object-fit:contain;">
+      </div>
+      <div class="platform-label">原生移动APP开发</div>
+    </div>
+
+    <div class="platform-item">
+      <div class="platform-icon">
+        <!-- WeChat -->
+        <img src="images/4.png" alt="微信公众平台开发" style="width:100%;height:100%;object-fit:contain;">
+      </div>
+      <div class="platform-label">微信公众平台开发</div>
+    </div>
+
+    <div class="platform-item">
+      <div class="platform-icon">
+        <!-- Monitor -->
+        <img src="images/5.png" alt="网站开发" style="width:100%;height:100%;object-fit:contain;">
+      </div>
+      <div class="platform-label">网站开发</div>
+    </div>
+
+    <div class="platform-item">
+      <div class="platform-icon">
+        <!-- Laptop -->
+        <img src="images/6.png" alt="桌面应用开发" style="width:100%;height:100%;object-fit:contain;">
+      </div>
+      <div class="platform-label">桌面应用开发</div>
+    </div>
+
+  </div>
+
+</div>
+
+</body>
+</html>
