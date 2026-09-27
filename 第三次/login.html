@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="AI 助教答疑平台 —— 个性化登录页面">
+    <title>登录 - AI 助教答疑平台</title>
+    <link rel="icon" href="images/logo.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<main class="auth">
+
+    <!-- ==================== 左侧：欢迎区（读取注册时的个性化设置） ==================== -->
+    <aside class="auth__side">
+        <div class="auth__logo">
+            <img src="images/logo.svg" alt="平台标志" width="34" height="34">
+            <span>AI 助教答疑平台</span>
+        </div>
+
+        <h1 class="auth__slogan" id="welcomeTitle">欢迎回来</h1>
+        <p class="auth__desc">
+            你的学习进度、错题本与历史对话<br>
+            都已为你保留。
+        </p>
+
+        <!-- 注册时上传的头像会显示在这里（个性化） -->
+        <div style="display:flex;align-items:center;gap:14px;position:relative;z-index:1;">
+            <img id="sideAvatar" class="avatar-preview" src="images/avatar.svg"
+                 alt="我的头像" width="64" height="64"
+                 style="width:64px;height:64px;flex:0 0 64px;border-color:rgba(255,255,255,.6)">
+            <div>
+                <div style="font-size:16px;font-weight:700" id="sideNickname">同学，你好</div>
+                <div style="font-size:12.5px;opacity:.85">今日推荐：继续上次的《Web 前端》答疑</div>
+            </div>
+        </div>
+
+        <ul class="auth__features">
+            <li>历史对话云端同步，换设备接着问</li>
+            <li>错题自动归档，考前一次复习</li>
+        </ul>
+    </aside>
+
+    <!-- ==================== 右侧：登录表单区 ==================== -->
+    <section class="auth__panel">
+        <h2 class="auth__title">登录学习空间</h2>
+        <p class="auth__sub">还没有账号？<a href="register.html" style="color:var(--brand);font-weight:600;text-decoration:none">免费注册 →</a></p>
+
+        <!--
+            【表单增强要点】
+            novalidate 故意不加 —— 我们要使用浏览器原生校验
+            autocomplete="on" + 各字段的 autocomplete 语义值 → 一键自动填充
+        -->
+        <form id="loginForm" class="form" action="index.html" method="post" autocomplete="on">
+
+            <div class="field">
+                <label for="loginName">账号 <span class="req">*</span></label>
+                <div class="input-wrap">
+                    <span class="input-icon">👤</span>
+                    <!-- list 关联 <datalist>：把本机注册过的账号作为候选项 -->
+                    <input type="text" id="loginName" name="loginName" list="accountList"
+                           placeholder="用户名 / 邮箱 / 手机号"
+                           minlength="4" maxlength="32"
+                           autocomplete="username" autofocus required>
+                    <datalist id="accountList"></datalist>
+                </div>
+            </div>
+
+            <div class="field">
+                <label for="loginPwd">密码 <span class="req">*</span></label>
+                <div class="input-wrap">
+                    <span class="input-icon">🔒</span>
+                    <input type="password" id="loginPwd" name="loginPwd"
+                           placeholder="请输入密码"
+                           minlength="8" maxlength="20"
+                           autocomplete="current-password" required>
+                    <button type="button" class="input-btn" id="togglePwd">显示</button>
+                </div>
+            </div>
+
+            <!-- ---------- 图形/短信验证码 ---------- -->
+            <div class="field">
+                <label for="captcha">验证码 <span class="req">*</span></label>
+                <div class="row" style="align-items:start">
+                    <div class="input-wrap">
+                        <!-- inputmode="numeric"：手机端弹数字键盘；autocomplete="one-time-code"：系统短信验证码自动填充 -->
+                        <input type="text" id="captcha" name="captcha"
+                               placeholder="请输入 4 位数字"
+                               pattern="[0-9]{4}" maxlength="4"
+                               inputmode="numeric" autocomplete="one-time-code"
+                               title="验证码为 4 位数字" required>
+                    </div>
+                    <div style="display:flex;align-items:center;gap:10px">
+                        <output id="captchaBox" style="
+                            display:inline-block;padding:10px 18px;font-size:17px;font-weight:700;
+                            letter-spacing:6px;color:var(--brand);background:var(--brand-soft);
+                            border-radius:10px;user-select:none;">8 2 4 6</output>
+                        <button type="button" class="input-btn" id="refreshCaptcha"
+                                style="position:static">换一张</button>
+                    </div>
+                </div>
+                <small class="hint" id="captchaHint">看不清可以点「换一张」刷新右侧验证码</small>
+            </div>
+
+            <!-- ---------- 登录选项 ---------- -->
+            <fieldset class="group">
+                <legend>登录选项</legend>
+
+                <div class="field">
+                    <label>以什么身份登录</label>
+                    <div class="chips">
+                        <label><input type="radio" name="loginRole" value="student" checked required> 学生</label>
+                        <label><input type="radio" name="loginRole" value="teacher"> 教师</label>
+                        <label><input type="radio" name="loginRole" value="assistant"> 助教</label>
+                    </div>
+                </div>
+
+                <div class="field" style="margin-bottom:0">
+                    <label class="checkbox-line">
+                        <!-- 下拉候选项：<select> 的另一种表单控件 -->
+                        <input type="checkbox" id="remember" name="remember" checked>
+                        <span>记住我的账号<span style="color:var(--gray)">（下次打开自动填入）</span></span>
+                    </label>
+                    <label class="checkbox-line" style="margin-top:10px">
+                        <input type="checkbox" id="autoLogin" name="autoLogin">
+                        <span>7 天内免登录</span>
+                    </label>
+                </div>
+            </fieldset>
+
+            <div style="text-align:right;margin:-6px 0 18px">
+                <a href="#" id="openForgot" style="font-size:13px;color:var(--brand);text-decoration:none">忘记密码？</a>
+            </div>
+
+        </form>
+
+        <!-- 同样使用 form 属性：按钮在表单外也能提交 / 重置 -->
+        <div class="actions">
+            <button type="submit" form="loginForm" class="btn btn--primary">登 录</button>
+            <button type="reset" form="loginForm" class="btn btn--ghost">重 置</button>
+        </div>
+
+        <!-- 第三方登录 -->
+        <div class="oauth">
+            <div class="oauth__divider">其他登录方式</div>
+            <div class="oauth__list">
+                <button type="button">微信登录</button>
+                <button type="button">Gitee 登录</button>
+                <button type="button">校园统一认证</button>
+            </div>
+        </div>
+
+        <p class="form-foot">登录即表示你同意 <a href="register.html">《用户服务协议》</a></p>
+    </section>
+</main>
+
+<!-- ==================== 弹窗：忘记密码（<dialog>） ==================== -->
+<dialog id="forgotDialog">
+    <h3>找回密码</h3>
+    <p>请输入注册时使用的邮箱，我们会向该邮箱发送重置链接。</p>
+    <!-- method="dialog"：提交后自动关闭弹窗，无需 JS -->
+    <form method="dialog" id="forgotForm">
+        <div class="field">
+            <label for="forgotEmail">注册邮箱</label>
+            <input type="email" id="forgotEmail" name="forgotEmail"
+                   placeholder="student@example.com" autocomplete="email" required>
+        </div>
+        <div class="dialog-actions">
+            <button type="submit" class="btn btn--primary" style="letter-spacing:1px">发送重置邮件</button>
+            <button type="button" class="btn btn--ghost" id="closeForgot" style="letter-spacing:1px">取消</button>
+        </div>
+    </form>
+</dialog>
+
+<!-- ==================== 弹窗：登录成功 ==================== -->
+<dialog id="okDialog">
+    <h3>登录成功 ✅</h3>
+    <p id="okText">正在进入 AI 助教答疑平台……</p>
+    <div class="dialog-actions">
+        <button type="button" class="btn btn--primary" id="goHome">进入平台</button>
+    </div>
+</dialog>
+
+<script>
+/* =======================================================================
+   1. 读取注册页保存的个性化设置：主题色 / 昵称 / 头像
+   ======================================================================= */
+let savedTheme = '#3b6ef5', savedNick = '', savedUser = '', savedAvatar = '';
+try {
+    savedTheme  = localStorage.getItem('ai-theme')    || savedTheme;
+    savedNick   = localStorage.getItem('ai-nickname') || '';
+    savedUser   = localStorage.getItem('ai-username') || '';
+    savedAvatar = localStorage.getItem('ai-avatar')   || '';
+} catch (e) { /* 无痕模式下忽略 */ }
+
+document.documentElement.style.setProperty('--brand', savedTheme);
+
+if (savedNick) {
+    document.getElementById('welcomeTitle').textContent = '欢迎回来，' + savedNick;
+    document.getElementById('sideNickname').textContent = savedNick + '，你好';
+}
+if (savedAvatar) document.getElementById('sideAvatar').src = savedAvatar;
+
+/* 把本机注册过的账号放进 <datalist>，并在勾选“记住我”时自动填入 */
+const loginName = document.getElementById('loginName');
+if (savedUser) {
+    const opt = document.createElement('option');
+    opt.value = savedUser;
+    document.getElementById('accountList').appendChild(opt);
+    loginName.value = savedUser;                                // 自动填入账号
+    document.getElementById('loginPwd').focus();                 // 光标直接落到密码框
+}
+/* 同步“记住我”状态到本地 */
+document.getElementById('remember').addEventListener('change', e => {
+    try {
+        if (e.target.checked) localStorage.setItem('ai-remember', '1');
+        else localStorage.removeItem('ai-remember');
+    } catch (err) {}
+});
+
+/* =======================================================================
+   2. 密码显示 / 隐藏
+   ======================================================================= */
+const loginPwd = document.getElementById('loginPwd');
+const togglePwd = document.getElementById('togglePwd');
+togglePwd.addEventListener('click', () => {
+    const show = loginPwd.type === 'password';
+    loginPwd.type = show ? 'text' : 'password';
+    togglePwd.textContent = show ? '隐藏' : '显示';
+});
+
+/* =======================================================================
+   3. 验证码：点击“换一张”随机生成 4 位数字
+   ======================================================================= */
+const captchaBox = document.getElementById('captchaBox');
+const captchaInput = document.getElementById('captcha');
+let captchaCode = '8246';
+function newCaptcha() {
+    captchaCode = String(Math.floor(1000 + Math.random() * 9000));
+    captchaBox.textContent = captchaCode.split('').join(' ');
+}
+document.getElementById('refreshCaptcha').addEventListener('click', newCaptcha);
+newCaptcha();
+
+/* 验证码比对：用 setCustomValidity 给出中文提示 */
+captchaInput.addEventListener('input', () => {
+    if (captchaInput.value.length === 4 && captchaInput.value !== captchaCode) {
+        captchaInput.setCustomValidity('验证码不正确，请重新输入');
+        document.getElementById('captchaHint').textContent = '⚠ 验证码不正确';
+    } else {
+        captchaInput.setCustomValidity('');
+        document.getElementById('captchaHint').textContent = '看不清可以点「换一张」刷新右侧验证码';
+    }
+});
+
+/* =======================================================================
+   4. 忘记密码弹窗
+   ======================================================================= */
+const forgotDialog = document.getElementById('forgotDialog');
+document.getElementById('openForgot').addEventListener('click', e => {
+    e.preventDefault();
+    forgotDialog.showModal();
+});
+document.getElementById('closeForgot').addEventListener('click', () => forgotDialog.close());
+
+/* =======================================================================
+   5. 提交登录
+   ======================================================================= */
+const loginForm = document.getElementById('loginForm');
+const okDialog = document.getElementById('okDialog');
+loginForm.addEventListener('submit', e => {
+    e.preventDefault();
+    const name = loginName.value;
+    if (document.getElementById('remember').checked) {
+        try { localStorage.setItem('ai-username', name); } catch (err) {}
+    }
+    document.getElementById('okText').textContent =
+        (savedNick || name) + '，欢迎回到 AI 助教答疑平台，正在进入……';
+    okDialog.showModal();
+});
+document.getElementById('goHome').addEventListener('click', () => {
+    location.href = 'index.html';
+});
+</script>
+
+</body>
+</html>

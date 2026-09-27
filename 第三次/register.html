@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="AI 助教答疑平台 —— 个性化注册页面">
+    <meta name="author" content="前端课程作业">
+    <title>个性化注册 - AI 助教答疑平台</title>
+    <link rel="icon" href="images/logo.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<main class="auth">
+
+    <!-- ==================== 左侧：品牌宣传区 ==================== -->
+    <aside class="auth__side">
+        <div class="auth__logo">
+            <img src="images/logo.svg" alt="平台标志" width="34" height="34">
+            <span>AI 助教答疑平台</span>
+        </div>
+
+        <h1 class="auth__slogan">智能答疑 · 随时提问</h1>
+        <p class="auth__desc">
+            上传课件即可向 AI 助教提问，<br>
+            课程知识随问随答，学习进度一目了然。
+        </p>
+
+        <ul class="auth__features">
+            <li>多轮对话追问，逐步讲透知识点</li>
+            <li>按课程建知识库，答案有据可依</li>
+            <li>个性化学习画像，推荐专属练习</li>
+        </ul>
+    </aside>
+
+    <!-- ==================== 右侧：注册表单区 ==================== -->
+    <section class="auth__panel">
+        <h2 class="auth__title">创建你的学习账号</h2>
+        <p class="auth__sub">带 <span style="color:#f04438">*</span> 的为必填项，其余均可稍后补充</p>
+
+        <!-- 表单完成度：<progress> 元素 + <output> 实时反馈 -->
+        <div class="progress-row">
+            <span>资料完成度</span>
+            <progress id="fillProgress" value="0" max="100" aria-label="资料完成度">0%</progress>
+            <output id="fillText" for="fillProgress">0%</output>
+        </div>
+
+        <details class="tips">
+            <summary>为什么要填这些资料？（点开看看）</summary>
+            <p>
+                你填写的信息只用于生成个人学习画像：昵称与头像用于答疑界面的称呼，
+                院系与年级用于匹配对应课程的知识库，兴趣标签用于推荐练习题目。
+                所有资料都可以在「个人中心」随时修改。
+            </p>
+        </details>
+
+        <!--
+            【表单增强要点】
+            action + method：提交目标与请求方式
+            autocomplete="on"：整表开启浏览器自动填充
+            enctype：文件上传必须为 multipart/form-data
+        -->
+        <form id="regForm" class="form" action="login.html" method="post"
+              enctype="multipart/form-data" autocomplete="on">
+
+            <!-- ---------- 第 1 组：账号安全 ---------- -->
+            <fieldset class="group">
+                <legend>① 账号与安全</legend>
+
+                <div class="row">
+                    <div class="field">
+                        <label for="username">用户名 <span class="req">*</span></label>
+                        <div class="input-wrap">
+                            <span class="input-icon">👤</span>
+                            <!-- pattern 正则校验：字母开头，4-16 位字母/数字/下划线 -->
+                            <input type="text" id="username" name="username"
+                                   placeholder="字母开头，4-16 位"
+                                   pattern="[A-Za-z][A-Za-z0-9_]{3,15}"
+                                   minlength="4" maxlength="16"
+                                   title="需以字母开头，只能包含字母、数字和下划线，长度 4-16 位"
+                                   autocomplete="username" autofocus required>
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <label for="nickname">昵称（怎么称呼你）</label>
+                        <!-- maxlength 限制长度，placeholder 给出示例 -->
+                        <input type="text" id="nickname" name="nickname"
+                               placeholder="例如：小明同学" maxlength="12" autocomplete="nickname">
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="field">
+                        <label for="email">常用邮箱 <span class="req">*</span></label>
+                        <!-- type="email"：浏览器自动校验邮箱格式 -->
+                        <input type="email" id="email" name="email"
+                               placeholder="student@example.com"
+                               autocomplete="email" spellcheck="false" required>
+                        <small class="hint">用于找回密码与接收答疑周报</small>
+                    </div>
+
+                    <div class="field">
+                        <label for="phone">手机号 <span class="req">*</span></label>
+                        <!-- type="tel" + pattern + inputmode：移动端弹出数字键盘 -->
+                        <input type="tel" id="phone" name="phone"
+                               placeholder="11 位手机号"
+                               pattern="1[3-9][0-9]{9}" maxlength="11"
+                               inputmode="numeric" autocomplete="tel"
+                               title="请输入 11 位中国大陆手机号" required>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="field">
+                        <label for="password">设置密码 <span class="req">*</span></label>
+                        <div class="input-wrap">
+                            <!-- minlength + pattern：长度与复杂度双重约束 -->
+                            <input type="password" id="password" name="password"
+                                   placeholder="至少 8 位，含字母和数字"
+                                   minlength="8" maxlength="20"
+                                   pattern="(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d!@#$%^&*._-]{8,20}"
+                                   title="8-20 位，至少包含一个字母和一个数字"
+                                   autocomplete="new-password" required>
+                            <button type="button" class="input-btn" id="togglePwd">显示</button>
+                        </div>
+
+                        <!-- <meter> 密码强度计量表 + <output> 文字结论 -->
+                        <div class="meter-row">
+                            <meter id="pwdMeter" min="0" max="4" low="2" high="3" optimum="4" value="0">0</meter>
+                            <output id="pwdText" for="pwdMeter">待输入</output>
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <label for="password2">确认密码 <span class="req">*</span></label>
+                        <input type="password" id="password2" name="password2"
+                               placeholder="请再输入一次"
+                               minlength="8" maxlength="20"
+                               autocomplete="new-password" required>
+                        <small class="hint" id="pwd2Hint">两次输入需保持一致</small>
+                    </div>
+                </div>
+            </fieldset>
+
+            <!-- ---------- 第 2 组：个性化资料 ---------- -->
+            <fieldset class="group">
+                <legend>② 个性化资料</legend>
+
+                <div class="field">
+                    <label>我的身份 <span class="req">*</span></label>
+                    <!-- 单选按钮组：name 相同即互斥，required 保证必选 -->
+                    <div class="chips">
+                        <label><input type="radio" name="role" value="student" checked required> 学生</label>
+                        <label><input type="radio" name="role" value="teacher"> 教师</label>
+                        <label><input type="radio" name="role" value="assistant"> 助教</label>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="field">
+                        <label for="dept">院系 / 专业</label>
+                        <!-- list + <datalist>：既可选又可自己输入 -->
+                        <input type="text" id="dept" name="dept" list="deptList"
+                               placeholder="输入或从下拉中选择" autocomplete="off">
+                        <datalist id="deptList">
+                            <option value="计算机科学与技术"></option>
+                            <option value="软件工程"></option>
+                            <option value="人工智能"></option>
+                            <option value="数据科学与大数据技术"></option>
+                            <option value="网络工程"></option>
+                            <option value="电子信息工程"></option>
+                        </datalist>
+                    </div>
+
+                    <div class="field">
+                        <label for="grade">所在年级</label>
+                        <!-- <select> + <optgroup> 分组下拉 -->
+                        <select id="grade" name="grade">
+                            <option value="">请选择（可跳过）</option>
+                            <optgroup label="本科生">
+                                <option value="大一">大一</option>
+                                <option value="大二">大二</option>
+                                <option value="大三">大三</option>
+                                <option value="大四">大四</option>
+                            </optgroup>
+                            <optgroup label="研究生">
+                                <option value="研一">研一</option>
+                                <option value="研二">研二</option>
+                                <option value="研三">研三</option>
+                            </optgroup>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="field">
+                        <label for="stuno">学号</label>
+                        <input type="text" id="stuno" name="stuno"
+                               placeholder="8-12 位数字" pattern="[0-9]{8,12}"
+                               maxlength="12" inputmode="numeric" title="学号为 8-12 位数字">
+                    </div>
+
+                    <div class="field">
+                        <label for="enroll">入学日期</label>
+                        <!-- type="date" + min/max：浏览器自带日期选择器并限定范围 -->
+                        <input type="date" id="enroll" name="enroll"
+                               min="2018-09-01" max="2026-12-31" value="2024-09-01">
+                    </div>
+                </div>
+
+                <div class="field">
+                    <label for="avatar">上传头像（PNG / JPG）</label>
+                    <!-- type="file" + accept：限制可选文件类型 -->
+                    <div class="avatar-row">
+                        <img id="avatarPreview" class="avatar-preview" src="images/avatar.svg"
+                             alt="头像预览" width="76" height="76">
+                        <div style="flex:1">
+                            <input type="file" id="avatar" name="avatar" accept="image/png,image/jpeg,image/*">
+                            <small class="hint">建议 1MB 以内的正方形图片，将显示在答疑对话气泡旁</small>
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+
+            <!-- ---------- 第 3 组：学习偏好（个性化核心） ---------- -->
+            <fieldset class="group">
+                <legend>③ 学习偏好</legend>
+
+                <div class="field">
+                    <label>我感兴趣的课程方向（可多选）</label>
+                    <div class="chips">
+                        <label><input type="checkbox" name="interest" value="web前端"> Web 前端开发</label>
+                        <label><input type="checkbox" name="interest" value="python"> Python 程序设计</label>
+                        <label><input type="checkbox" name="interest" value="数据结构"> 数据结构与算法</label>
+                        <label><input type="checkbox" name="interest" value="数据库"> 数据库原理</label>
+                        <label><input type="checkbox" name="interest" value="ai"> 人工智能导论</label>
+                        <label><input type="checkbox" name="interest" value="network"> 计算机网络</label>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="field">
+                        <label for="goal">每日学习目标（小时）</label>
+                        <!-- type="range" 滑块 + <output> 实时显示数值 -->
+                        <input type="range" id="goal" name="goal"
+                               min="0.5" max="8" step="0.5" value="2"
+                               oninput="document.getElementById('goalText').value = this.value">
+                        <div class="meter-row">
+                            <output id="goalText" for="goal" class="range-value">2</output>
+                            <span>小时 / 天</span>
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <label for="qaTime">习惯答疑的时段</label>
+                        <!-- type="time"：原生时间选择器 -->
+                        <input type="time" id="qaTime" name="qaTime" value="20:00" min="06:00" max="23:59">
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="field">
+                        <label for="theme">界面主题色</label>
+                        <!-- type="color"：原生取色器，实时给整个页面换肤 -->
+                        <input type="color" id="theme" name="theme" value="#3b6ef5">
+                        <small class="hint">选择后会立即应用到注册页与之后的登录页</small>
+                    </div>
+
+                    <div class="field">
+                        <label for="homepage">个人主页 / 博客</label>
+                        <!-- type="url"：自动校验网址格式 -->
+                        <input type="url" id="homepage" name="homepage"
+                               placeholder="https://example.com"
+                               pattern="https?://.+" autocomplete="url">
+                    </div>
+                </div>
+
+                <div class="field">
+                    <label for="intro">一句话自我介绍</label>
+                    <!-- <textarea> + maxlength + 字数统计 -->
+                    <textarea id="intro" name="intro" maxlength="120"
+                              placeholder="例如：想扎实学好前端，希望 AI 助教多用例子讲解"
+                              oninput="document.getElementById('introCount').value = this.value.length"></textarea>
+                    <small class="hint">
+                        已输入 <output id="introCount" for="intro">0</output> / 120 字
+                    </small>
+                </div>
+            </fieldset>
+
+            <!-- ---------- 第 4 组：协议 ---------- -->
+            <fieldset class="group">
+                <legend>④ 协议确认</legend>
+
+                <div class="field">
+                    <label class="checkbox-line">
+                        <!-- required 作用于 checkbox：不勾选无法提交 -->
+                        <input type="checkbox" id="agree" name="agree" required>
+                        <span>我已阅读并同意 <a href="#" id="openTerms">《用户服务协议》</a>
+                              与《隐私政策》 <span class="req">*</span></span>
+                    </label>
+                </div>
+
+                <div class="field" style="margin-bottom:0">
+                    <label class="checkbox-line">
+                        <input type="checkbox" id="subscribe" name="subscribe" checked>
+                        <span>每周给我发送一份 AI 答疑学习周报（可随时退订）</span>
+                    </label>
+                </div>
+            </fieldset>
+
+        </form>
+        <!-- ↑ 表单结束 ↑ -->
+
+        <!--
+            【表单增强要点】form 属性
+            这两个按钮写在 <form> 标签之外，靠 form="regForm" 与表单建立关联，
+            点击后依然可以提交 / 重置 regForm，页面结构因此更自由。
+        -->
+        <div class="actions">
+            <button type="submit" form="regForm" class="btn btn--primary">立即注册</button>
+            <button type="reset" form="regForm" class="btn btn--ghost">重 置</button>
+        </div>
+
+        <p class="form-foot">
+            已经有账号了？<a href="login.html">直接去登录 →</a>
+        </p>
+    </section>
+</main>
+
+<!-- ==================== 弹窗：服务协议（<dialog> 元素） ==================== -->
+<dialog id="termsDialog">
+    <h3>用户服务协议（摘要）</h3>
+    <p>
+        1. 本平台为教学辅助工具，AI 生成的回答仅供参考，请以教材与教师讲解为准。<br>
+        2. 请勿上传含个人隐私或涉密内容的文件。<br>
+        3. 账号仅限本人使用，请妥善保管密码。
+    </p>
+    <div class="dialog-actions">
+        <button type="button" class="btn btn--primary" id="acceptTerms">我已阅读并同意</button>
+    </div>
+</dialog>
+
+<!-- ==================== 弹窗：注册成功 ==================== -->
+<dialog id="doneDialog">
+    <h3 id="doneTitle">注册成功 🎉</h3>
+    <p id="doneText">你的个性化学习空间已创建，正在前往登录页……</p>
+    <div class="dialog-actions">
+        <button type="button" class="btn btn--primary" id="goLogin">前往登录</button>
+    </div>
+</dialog>
+
+<script>
+/* =======================================================================
+   脚本部分（渐进增强：即使禁用 JS，表单的原生校验依然可用）
+   ======================================================================= */
+
+/* ---------- 1. 密码显示 / 隐藏切换 ---------- */
+const pwd = document.getElementById('password');
+const togglePwd = document.getElementById('togglePwd');
+togglePwd.addEventListener('click', () => {
+    const show = pwd.type === 'password';
+    pwd.type = show ? 'text' : 'password';
+    togglePwd.textContent = show ? '隐藏' : '显示';
+});
+
+/* ---------- 2. 密码强度：<meter> 打分 ---------- */
+const meter = document.getElementById('pwdMeter');
+const pwdText = document.getElementById('pwdText');
+pwd.addEventListener('input', () => {
+    const v = pwd.value;
+    let score = 0;
+    if (v.length >= 8) score++;
+    if (/[A-Za-z]/.test(v) && /\d/.test(v)) score++;
+    if (/[A-Z]/.test(v) && /[a-z]/.test(v)) score++;
+    if (/[^A-Za-z0-9]/.test(v) && v.length >= 12) score++;
+
+    meter.value = score;
+    const labels = ['待输入', '弱', '一般', '较强', '很强'];
+    pwdText.textContent = v ? labels[score] : '待输入';
+    pwdText.style.color = ['#6b7a90', '#f04438', '#f79009', '#12b76a', '#12b76a'][score];
+});
+
+/* ---------- 3. 确认密码：用 setCustomValidity 写自定义校验消息 ---------- */
+const pwd2 = document.getElementById('password2');
+const pwd2Hint = document.getElementById('pwd2Hint');
+function checkSame() {
+    if (pwd2.value && pwd2.value !== pwd.value) {
+        pwd2.setCustomValidity('两次输入的密码不一致');
+        pwd2Hint.textContent = '⚠ 两次输入的密码不一致';
+        pwd2Hint.style.color = '#f04438';
+    } else {
+        pwd2.setCustomValidity('');
+        pwd2Hint.textContent = '两次输入需保持一致';
+        pwd2Hint.style.color = '#6b7a90';
+    }
+}
+pwd.addEventListener('input', checkSame);
+pwd2.addEventListener('input', checkSame);
+
+/* ---------- 4. 主题色实时换肤（个性化） ---------- */
+const theme = document.getElementById('theme');
+theme.addEventListener('input', () => {
+    document.documentElement.style.setProperty('--brand', theme.value);
+});
+
+/* ---------- 5. 头像本地预览（FileReader 读取，不上传服务器） ---------- */
+const avatar = document.getElementById('avatar');
+const avatarPreview = document.getElementById('avatarPreview');
+avatar.addEventListener('change', () => {
+    const file = avatar.files && avatar.files[0];
+    if (!file) return;
+    if (!file.type.startsWith('image/')) {
+        alert('请选择图片文件');
+        avatar.value = '';
+        return;
+    }
+    const reader = new FileReader();
+    reader.onload = e => { avatarPreview.src = e.target.result; };
+    reader.readAsDataURL(file);
+});
+
+/* ---------- 6. 资料完成度：<progress> 实时计算 ---------- */
+const regForm = document.getElementById('regForm');
+const fillProgress = document.getElementById('fillProgress');
+const fillText = document.getElementById('fillText');
+function updateProgress() {
+    const fields = regForm.querySelectorAll('input:not([type=checkbox]):not([type=radio]):not([type=range]), select, textarea');
+    let filled = 0, total = fields.length;
+    fields.forEach(el => { if (el.value.trim()) filled++; });
+    if (regForm.querySelector('input[name=interest]:checked')) filled++;   // 兴趣标签额外加分
+    total++;
+    const percent = Math.round(filled / total * 100);
+    fillProgress.value = percent;
+    fillText.value = percent + '%';
+}
+regForm.addEventListener('input', updateProgress);
+regForm.addEventListener('change', updateProgress);
+updateProgress();
+
+/* ---------- 7. 协议弹窗 ---------- */
+const termsDialog = document.getElementById('termsDialog');
+document.getElementById('openTerms').addEventListener('click', e => {
+    e.preventDefault();
+    termsDialog.showModal();                                   // HTML5 原生模态弹窗
+});
+document.getElementById('acceptTerms').addEventListener('click', () => {
+    document.getElementById('agree').checked = true;
+    termsDialog.close();
+});
+
+/* ---------- 8. 提交：原生校验通过后保存个性化设置并跳转 ---------- */
+const doneDialog = document.getElementById('doneDialog');
+regForm.addEventListener('submit', e => {
+    e.preventDefault();                                        // 演示用：拦截提交
+
+    // 把个性化设置存到本地，登录页读取后自动应用（换肤 + 头像 + 昵称）
+    try {
+        localStorage.setItem('ai-theme', theme.value);
+        localStorage.setItem('ai-nickname', document.getElementById('nickname').value
+            || document.getElementById('username').value);
+        localStorage.setItem('ai-username', document.getElementById('username').value);
+        localStorage.setItem('ai-avatar', avatarPreview.src);
+    } catch (err) { /* 无痕模式下忽略 */ }
+
+    document.getElementById('doneText').textContent =
+        (document.getElementById('username').value || '同学') + '，你的个性化学习空间已创建，正在前往登录页……';
+    doneDialog.showModal();
+});
+
+document.getElementById('goLogin').addEventListener('click', () => {
+    location.href = 'login.html';
+});
+</script>
+
+</body>
+</html>

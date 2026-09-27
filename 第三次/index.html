@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="AI 助教答疑平台 —— 智能答疑，随时提问">
+    <title>AI 助教答疑平台</title>
+    <link rel="icon" href="images/logo.svg" type="image/svg+xml">
+    <style>
+        :root {
+            --brand: #2563eb;
+            --ink: #1f2937;
+            --gray: #8a94a6;
+            --line: #e8ecf3;
+        }
+        * { box-sizing: border-box; }
+        body {
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 30px 16px;
+            font-family: "PingFang SC", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
+            color: var(--ink);
+            background: linear-gradient(160deg, #eef2f8 0%, #e3e9f3 100%);
+        }
+        .page { width: min(560px, 100%); }
+        .head { text-align: center; margin-bottom: 26px; }
+        .head h1 {
+            margin: 0;
+            font-size: 26px;
+            font-weight: 800;
+            letter-spacing: 3px;
+            color: #1b2436;
+        }
+        .head p {
+            margin: 10px 0 0;
+            font-size: 12.5px;
+            letter-spacing: 2px;
+            color: var(--gray);
+        }
+        .ask {
+            display: flex;
+            gap: 10px;
+            padding: 14px 16px;
+            background: #fff;
+            border-radius: 14px;
+            box-shadow: 0 12px 30px rgba(31, 41, 55, .1);
+        }
+        .ask input {
+            flex: 1;
+            padding: 12px 16px;
+            font-size: 14px;
+            font-family: inherit;
+            color: var(--ink);
+            background: #f8fafd;
+            border: 1px solid var(--line);
+            border-radius: 10px;
+            outline: none;
+            transition: border-color .2s, box-shadow .2s;
+        }
+        .ask input:focus {
+            border-color: var(--brand);
+            box-shadow: 0 0 0 4px rgba(37, 99, 235, .12);
+        }
+        .ask button {
+            padding: 12px 30px;
+            font-family: inherit;
+            font-size: 15px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            color: #fff;
+            background: var(--brand);
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background .2s, transform .15s;
+        }
+        .ask button:hover { background: #1d4ed8; transform: translateY(-1px); }
+        .bubble {
+            margin-top: 22px;
+            padding: 16px 20px;
+            background: #fff;
+            border-radius: 14px;
+            box-shadow: 0 12px 30px rgba(31, 41, 55, .08);
+        }
+        .bubble__name {
+            font-size: 12.5px;
+            font-weight: 700;
+            color: var(--brand);
+            margin-bottom: 8px;
+        }
+        .bubble__text { font-size: 14px; line-height: 1.9; color: #46536b; }
+        .bubble__text:empty::before { content: "等待提问……"; color: var(--gray); }
+        .nav {
+            margin-top: 26px;
+            text-align: center;
+            font-size: 13px;
+            color: var(--gray);
+        }
+        .nav a { color: var(--brand); text-decoration: none; font-weight: 600; }
+        .nav a:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+
+<main class="page">
+    <header class="head">
+        <h1>AI 助教答疑平台</h1>
+        <p>智能答疑 · 随时提问</p>
+    </header>
+
+    <!-- 提问表单：表单增强同样适用于主界面 -->
+    <form class="ask" id="askForm" action="#" method="post" autocomplete="off">
+        <label for="question" style="display:none">请输入你的问题</label>
+        <input type="text" id="question" name="question"
+               placeholder="输入你的问题，例如：什么是 HTML5 语义化标签？"
+               maxlength="200" enterkeyhint="send" required>
+        <button type="submit">提问</button>
+    </form>
+
+    <section class="bubble" aria-live="polite">
+        <div class="bubble__name">AI 助教</div>
+        <!-- <output> 元素：用于显示计算结果或脚本输出 -->
+        <output class="bubble__text" id="answer" for="question"></output>
+    </section>
+
+    <nav class="nav">
+        <a href="register.html">注册</a> ·
+        <a href="login.html">登录</a> ·
+        <a href="register.html">个人中心</a>
+    </nav>
+</main>
+
+<script>
+    let count = 0;
+    document.getElementById('askForm').addEventListener('submit', e => {
+        e.preventDefault();
+        const q = document.getElementById('question').value.trim();
+        if (!q) return;
+        count++;
+        document.getElementById('answer').textContent =
+            '这是第 ' + count + ' 个问题，AI 接口将按序号输出。你的问题：「' + q + '」';
+        document.getElementById('question').value = '';
+        document.getElementById('question').focus();
+    });
+</script>
+
+</body>
+</html>

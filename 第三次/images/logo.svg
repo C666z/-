@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-label="AI 助教答疑平台标志">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#3b6ef5"/>
+      <stop offset="1" stop-color="#8b5cf6"/>
+    </linearGradient>
+  </defs>
+  <rect x="2" y="2" width="60" height="60" rx="18" fill="url(#g)"/>
+  <path d="M18 24h28a4 4 0 0 1 4 4v14a4 4 0 0 1-4 4H30l-8 7v-7h-4a4 4 0 0 1-4-4V28a4 4 0 0 1 4-4z"
+        fill="#ffffff" opacity=".95"/>
+  <text x="32" y="41" font-family="Arial, Helvetica, sans-serif" font-size="15"
+        font-weight="bold" fill="#3b6ef5" text-anchor="middle">AI</text>
+</svg>
